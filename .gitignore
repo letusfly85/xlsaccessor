@@ -1,0 +1,15 @@
+*swp
+*iml
+build
+.idea
+.gradle
+resources/com/jellyfish85/xlsaccessor/*/*/*/*.properties
+*.properties
+*lst
+lib/dbaccessor.jar
+lib/svnaccessor.jar
+lib/cassandra-accessor.jar
+workspace
+attr
+const
+output
