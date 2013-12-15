@@ -2,9 +2,11 @@ package com.jellyfish85.xlsaccessor.dao.query.generate.tool
 
 import org.apache.poi.ss.usermodel.{Row, Sheet, WorkbookFactory, Workbook}
 import java.io.{File, FileInputStream}
+import org.apache.commons.lang.StringUtils
 
 import com.jellyfish85.xlsaccessor.bean.query.generate.tool.GeneralCodeBean
 import com.jellyfish85.xlsaccessor.utils.{XlsAccessUtils, AppProp}
+
 
 /**
  * == GeneralCodeDao ==
@@ -13,7 +15,7 @@ import com.jellyfish85.xlsaccessor.utils.{XlsAccessUtils, AppProp}
  * @author wada shunsuke
  * @since  2013/12/15
  *
- * @todo change column number to configurational values
+ * @todo change column number to configuration values
  *
  */
 class GeneralCodeDao {
@@ -44,7 +46,9 @@ class GeneralCodeDao {
       var checkVal: String = ""
       var row: Row = sheet.getRow(idx)
 
-      var constUMCode: String = "無"
+      var constUMCode: String =
+        prop.generalCodeDefineConstExistsFalse
+
       while (flg) {
         row = sheet.getRow(idx)
         if (row == null) {
@@ -57,13 +61,14 @@ class GeneralCodeDao {
             flg = false
           }
 
-          checkVal = utils.convertCellValue2String(row, evaluator, 1)
+          checkVal =
+            utils.convertCellValue2String(row, evaluator, prop.generalCodeDefineColumnMap("checkVal"))
 
-          if (checkVal == "" || checkVal == null){
+          if (StringUtils.isBlank(checkVal)){
             flg = false
           }
 
-          if (preCodeId != checkVal && switch == true && idx > 1) {
+          if (!preCodeId.equals(checkVal) && switch.equals(true) && idx > 1) {
             flg    = false
             switch = false
           }
@@ -73,25 +78,31 @@ class GeneralCodeDao {
           }
 
           if (switch){
-            constUMCode = utils.convertCellValue2String(row, evaluator, 8)
+            constUMCode =
+              utils.convertCellValue2String(row, evaluator, prop.generalCodeDefineColumnMap("constExists"))
 
-            if (constUMCode == "有") {
-              val entity: GeneralCodeBean = new GeneralCodeBean
+            if (constUMCode == prop.generalCodeDefineConstExistsTrue) {
+              val bean: GeneralCodeBean = new GeneralCodeBean
 
-              entity.filePath = filePath
-              entity.fileName = (new File(filePath)).getName
+              bean.filePath = filePath
+              bean.fileName = (new File(filePath)).getName
 
-              entity.codeId   = checkVal
-              entity.subsystemCd = utils.convertCellValue2String(row, evaluator, 0)
-              entity.logicalTableName  = prop.generalCodeLogicalTableName
-              entity.physicalTableName = prop.generalCodePhysicalTableName
+              bean.codeId   = checkVal
+              bean.subsystemCd =
+                utils.convertCellValue2String(row, evaluator, prop.generalCodeDefineColumnMap("subsystemCd"))
+              bean.logicalTableName  = prop.generalCodeLogicalTableName
+              bean.physicalTableName = prop.generalCodePhysicalTableName
 
-              entity.logicalCodeName = row.getCell(2).getStringCellValue()
-              entity.physicalCodeName = utils.convertCellValue2String(row, evaluator, 3)
-              entity.codeValue       = row.getCell(5).getStringCellValue()
-              entity.logicalKeyName  = row.getCell(6).getStringCellValue()
+              bean.logicalCodeName = row.
+                getCell(prop.generalCodeDefineColumnMap("logicalCodeName")).getStringCellValue()
+              bean.physicalCodeName = utils.
+                convertCellValue2String(row, evaluator, prop.generalCodeDefineColumnMap("physicalCodeName"))
+              bean.codeValue       =
+                row.getCell(prop.generalCodeDefineColumnMap("codeValue")).getStringCellValue()
+              bean.logicalKeyName  =
+                row.getCell(prop.generalCodeDefineColumnMap("logicalKeyName")).getStringCellValue()
 
-              list ::= entity
+              list ::= bean
             }
           }
 
@@ -102,6 +113,7 @@ class GeneralCodeDao {
       case e:Exception =>
         println("[ERROR]" + filePath)
         e.printStackTrace
+
     } finally {
       workBook = null
     }
