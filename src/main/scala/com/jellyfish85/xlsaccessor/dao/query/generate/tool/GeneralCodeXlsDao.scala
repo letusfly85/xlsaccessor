@@ -5,10 +5,12 @@ import org.apache.poi.ss.usermodel.{Row, Sheet, Workbook}
 import org.apache.commons.lang.StringUtils
 
 import com.jellyfish85.xlsaccessor.bean.query.generate.tool.GeneralCodeXlsBean
-import com.jellyfish85.xlsaccessor.utils.{XlsAccessUtils, AppProp}
+import com.jellyfish85.xlsaccessor.utils.{XlsAccessUtils, XlsAppProp}
 import com.jellyfish85.xlsaccessor.manager.XlsManager
 import com.jellyfish85.xlsaccessor.constant.AppConst
 import com.jellyfish85.svnaccessor.bean.SVNRequestBean
+import org.apache.commons.lang.math.NumberUtils
+import java.util
 
 
 /**
@@ -19,14 +21,13 @@ import com.jellyfish85.svnaccessor.bean.SVNRequestBean
  * @since  2013/12/15
  *
  */
-class GeneralCodeXlsDao {
+class GeneralCodeXlsDao extends GeneralXlsDao[GeneralCodeXlsBean] {
 
-  val prop:     AppProp        = new AppProp
+  val prop:     XlsAppProp        = new XlsAppProp
 
   val manager:  XlsManager     = new XlsManager
 
   val utils:    XlsAccessUtils = new XlsAccessUtils
-
 
   /**
    * == findAll ==
@@ -120,9 +121,11 @@ class GeneralCodeXlsDao {
             bean.ignoreFlg = AppConst.STRING_ZERO
           }
 
-          bean.displayOrder      =
-            utils.convertCellValue2String(row, evaluator, prop.generalCodeDefineColumnMap("displayOrder")).
-              asInstanceOf[Int]
+          val _displayOrder      =
+              utils.convertCellValue2String(row, evaluator, prop.generalCodeDefineColumnMap("displayOrder"))
+          if (NumberUtils.isNumber(_displayOrder)) {
+            bean.displayOrder = Integer.parseInt(_displayOrder)
+          }
 
           if (bean.ignoreFlg.equals(AppConst.STRING_ZERO)){
             resultSets ::= bean

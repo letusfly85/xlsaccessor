@@ -12,7 +12,7 @@ import java.io.InputStream
  * @since  2013/12/15
  *
  */
-class AppProp {
+class XlsAppProp {
 
   val inputStream: InputStream =
     getClass.getResourceAsStream("/com/jellyfish85/xlsaccessor/query/generate/tool/code.properties")
