@@ -116,9 +116,9 @@ class GeneralCodeXlsDao extends GeneralXlsDao[GeneralCodeXlsBean] {
           bean.ignoreFlg         =
             utils.convertCellValue2String(row, evaluator, prop.generalCodeDefineColumnMap("ignoreFlg"))
           if (StringUtils.isBlank(bean.ignoreFlg)){
-            bean.ignoreFlg = AppConst.STRING_ONE
-          } else {
             bean.ignoreFlg = AppConst.STRING_ZERO
+          } else {
+            bean.ignoreFlg = AppConst.STRING_ONE
           }
 
           val _displayOrder      =
