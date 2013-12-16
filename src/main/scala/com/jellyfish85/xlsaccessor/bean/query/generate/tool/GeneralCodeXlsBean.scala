@@ -8,17 +8,13 @@ package com.jellyfish85.xlsaccessor.bean.query.generate.tool
  * @since  2013/12/15
  *
  */
-class GeneralCodeBean {
-
-  var filePath: String = _
-  var fileName: String = _
+class GeneralCodeXlsBean extends GeneralXlsBean {
 
   var codeId  : String = _
   var logicalCodeName :String = _
   var physicalCodeName :String = _
 
   var subsystemCd: String = _
-  var ticketNumber: String = _
 
   var physicalTableName :String = _
   var logicalTableName  :String = _
@@ -44,6 +40,5 @@ class GeneralCodeBean {
   var delFlg: String = "0"
 
   var ignoreFlg: String = "0"
-
 
 }
