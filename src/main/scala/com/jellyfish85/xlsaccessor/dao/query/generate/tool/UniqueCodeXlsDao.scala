@@ -18,6 +18,7 @@ import java.io.{IOException, FileNotFoundException}
  * @since  2013/12/24
  *
  */
+@throws(classOf[NullPointerException])
 @throws(classOf[FileNotFoundException])
 @throws(classOf[IOException])
 class UniqueCodeXlsDao(path: String) extends GeneralXlsDao {
@@ -146,7 +147,7 @@ class UniqueCodeXlsDao(path: String) extends GeneralXlsDao {
       cell = row.getCell(idx)
       checkVal = utils.convertCellValue2String(cell, evaluator)
 
-      if (checkVal == prop.uniqueCodeDefineColumnStopper) {
+      if (checkVal.equals(prop.uniqueCodeDefineColumnStopper)) {
         xlsBean.endPos = idx
         flg = false
         return

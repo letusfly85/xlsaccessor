@@ -63,15 +63,18 @@ class XlsAppProp {
    *
    *
    *********************************************************************************/
-  val uniqueCodeDefineRowHeader: Int            = configuration.getInt("unique.code.define.row.header")
 
-  val uniqueCodeDefineRowDataStartPos: Int      = configuration.getInt("unique.code.define.row.data.start.pos")
+  val uniqueCodeBookParentPath: String           = configuration.getString("unique.code.book.parentPath")
 
-  val uniqueCodeDefineColumnStopper: String     = configuration.getString("unique.code.define.column.stopper")
+  val uniqueCodeDefineRowHeader: Int             = configuration.getInt("unique.code.define.row.header")
 
-  val uniqueCodeDefineRowColumnsDefine: Int     = configuration.getInt("unique.code.define.row.columns.define")
+  val uniqueCodeDefineRowDataStartPos: Int       = configuration.getInt("unique.code.define.row.data.start.pos")
 
-  val uniqueCodeDefineRowColumnsDataType: Int   = configuration.getInt("unique.code.define.row.columns.data.type")
+  val uniqueCodeDefineColumnStopper: String      = configuration.getString("unique.code.define.row.stopper")
+
+  val uniqueCodeDefineRowColumnsDefine: Int      = configuration.getInt("unique.code.define.row.columns.define")
+
+  val uniqueCodeDefineRowColumnsDataType: Int    = configuration.getInt("unique.code.define.row.columns.data.type")
 
   val uniqueCodeDefineRowColumnsDataLength: Int  = configuration.getInt("unique.code.define.row.columns.data.length")
 
