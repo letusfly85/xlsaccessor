@@ -7,6 +7,7 @@ import org.apache.poi.ss.usermodel.{FormulaEvaluator, Row, Cell, Sheet, Workbook
 import org.apache.commons.lang.StringUtils
 import java.util
 import java.io.{IOException, FileNotFoundException}
+import org.apache.commons.io.FilenameUtils
 
 
 /**
@@ -40,7 +41,7 @@ class UniqueCodeXlsDao(path: String) extends GeneralXlsDao {
     try{
       val row: Row     = sheet.getRow(prop.uniqueCodeDefineRowHeader)
 
-      xlsBean.fileName = workBook.getName(path).toString
+      xlsBean.fileName = FilenameUtils.getName(this.path)
       xlsBean.codeId =
         utils.convertCellValue2String(row, evaluator, prop.uniqueCodeDefineColumnMap("codeId"))
       xlsBean.logicalCodeName   =
@@ -74,7 +75,9 @@ class UniqueCodeXlsDao(path: String) extends GeneralXlsDao {
    *
    * @return
    */
-  def getCodeDefine(xlsBean: UniqueCodeXlsBean) :util.ArrayList[XlsColumnAttribute] = {
+  def getCodeDefine :util.ArrayList[XlsColumnAttribute] = {
+    val xlsBean: UniqueCodeXlsBean = getHeaderInfo
+
     val resultSets: util.ArrayList[XlsColumnAttribute] = new util.ArrayList[XlsColumnAttribute]()
 
     var flg = true
