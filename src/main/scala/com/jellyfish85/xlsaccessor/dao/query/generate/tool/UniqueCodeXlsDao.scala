@@ -1,10 +1,12 @@
 package com.jellyfish85.xlsaccessor.dao.query.generate.tool
 
 import com.jellyfish85.xlsaccessor.constant.AppConst
-import com.jellyfish85.xlsaccessor.bean.query.generate.tool.{ColumnAttribute, UniqueCodeXlsBean}
+import com.jellyfish85.xlsaccessor.bean.query.generate.tool.{XlsColumnAttribute, UniqueCodeXlsBean}
 
 import org.apache.poi.ss.usermodel.{FormulaEvaluator, Row, Cell, Sheet, Workbook}
 import org.apache.commons.lang.StringUtils
+import java.util
+import java.io.{IOException, FileNotFoundException}
 
 
 /**
@@ -16,24 +18,25 @@ import org.apache.commons.lang.StringUtils
  * @since  2013/12/24
  *
  */
-class UniqueCodeXlsDao extends GeneralXlsDao {
+@throws(classOf[FileNotFoundException])
+@throws(classOf[IOException])
+class UniqueCodeXlsDao(path: String) extends GeneralXlsDao {
+
+  val workBook:  Workbook          = manager.workbook(path)
+  val evaluator: FormulaEvaluator  = workBook.getCreationHelper.createFormulaEvaluator
+  val sheet: Sheet                 = workBook.getSheet(prop.generalCodeDefineSheetName)
 
   /**
    * get unique code's header information
    *
-   * @param path
    * @return
    */
-  def getHeaderInfo(path: String) :UniqueCodeXlsBean = {
+  def getHeaderInfo :UniqueCodeXlsBean = {
 
     val xlsBean: UniqueCodeXlsBean = new UniqueCodeXlsBean
-    xlsBean.path     = path
+    xlsBean.path     = this.path
 
-    var workBook: Workbook = null
     try{
-      workBook         = manager.workbook(path)
-      val evaluator    = workBook.getCreationHelper.createFormulaEvaluator
-      val sheet: Sheet = workBook.getSheet(prop.generalCodeDefineSheetName)
       val row: Row     = sheet.getRow(prop.uniqueCodeDefineRowHeader)
 
       xlsBean.fileName = workBook.getName(path).toString
@@ -61,26 +64,22 @@ class UniqueCodeXlsDao extends GeneralXlsDao {
         println("[ERROR]" + xlsBean.path)
         e.printStackTrace()
 
-    } finally {
-      workBook = null
     }
-
     xlsBean
   }
 
   /**
    * == getCodeDefine ==
    *
-   * @param sheet
    * @return
    */
-  def getCodeDefine(sheet: Sheet, evaluator: FormulaEvaluator) :List[ColumnAttribute] = {
-    var resultSets: List[ColumnAttribute] = List()
+  def getCodeDefine(xlsBean: UniqueCodeXlsBean) :util.ArrayList[XlsColumnAttribute] = {
+    val resultSets: util.ArrayList[XlsColumnAttribute] = new util.ArrayList[XlsColumnAttribute]()
 
     var flg = true
-    val row: Row      = sheet.getRow(prop.uniqueCodeDefineRowColumnsDefine)
-    val rowOfDataType = sheet.getRow(prop.uniqueCodeDefineRowColumnsDataType)
-    val rowOfStopper  = sheet.getRow(prop.uniqueCodeDefineRowColumnsDataLength)
+    val row: Row      = this.sheet.getRow(prop.uniqueCodeDefineRowColumnsDefine)
+    val rowOfDataType = this.sheet.getRow(prop.uniqueCodeDefineRowColumnsDataType)
+    val rowOfStopper  = this.sheet.getRow(prop.uniqueCodeDefineRowColumnsDataLength)
 
     var idx = 1
     var checkVal :String = AppConst.STRING_BLANK
@@ -93,7 +92,7 @@ class UniqueCodeXlsDao extends GeneralXlsDao {
               utils.convertCellValue2String(row, evaluator, idx)
       }
 
-      if (checkVal == prop.uniqueCodeDefineColumnStopper || idx > 1000) {
+      if (checkVal.equals(prop.uniqueCodeDefineColumnStopper) || idx > 1000) {
           flg = false
       }
 
@@ -105,7 +104,7 @@ class UniqueCodeXlsDao extends GeneralXlsDao {
           var dataLength: Int = AppConst.INT_ZERO
 
           //todo
-          if (dataType == "VARCHAR2" || dataType == "VARCHAR" || dataType == "CHAR") {
+          if (dataType.equals("VARCHAR2") || dataType.equals("VARCHAR") || dataType.equals("CHAR")) {
             val _numericCell = rowOfStopper.getCell(idx)
             _numericCell.getCellType match {
               case Cell.CELL_TYPE_NUMERIC =>
@@ -116,11 +115,12 @@ class UniqueCodeXlsDao extends GeneralXlsDao {
             }
           }
 
-          val attr: ColumnAttribute = new ColumnAttribute(
+          val attr: XlsColumnAttribute = new XlsColumnAttribute(
+            xlsBean.logicalTableName, xlsBean.physicalTableName,
             AppConst.STRING_BLANK, physicalColumnName, dataType, dataLength
-
           )
-          resultSets ::= attr
+
+          resultSets.add(attr)
         }
       }
       idx += 1
@@ -135,9 +135,8 @@ class UniqueCodeXlsDao extends GeneralXlsDao {
    * specify code define data span
    *
    * @param xlsBean
-   * @param evaluator
    */
-  def specifySpan(row: Row ,xlsBean: UniqueCodeXlsBean, evaluator: FormulaEvaluator): Unit = {
+  def specifySpan(row: Row ,xlsBean: UniqueCodeXlsBean): Unit = {
     var flg = true
 
     var idx = 1
@@ -167,20 +166,14 @@ class UniqueCodeXlsDao extends GeneralXlsDao {
    * 
    * get data entry
    *
-   * @param path
    * @return
    */
-  def getDataEntry(path: String): List[Map[Int, String]] = {
+  def getDataEntry: List[Map[Int, String]] = {
     var list: List[Map[Int, String]] = List()
 
-    val uniqueCodeInfo: UniqueCodeXlsBean = getHeaderInfo(path)
+    val uniqueCodeInfo: UniqueCodeXlsBean = getHeaderInfo
 
-    var workBook: Workbook = null
     try{
-      workBook         = manager.workbook(path)
-      val evaluator    = workBook.getCreationHelper.createFormulaEvaluator
-      val sheet: Sheet = workBook.getSheet(prop.generalCodeDefineSheetName)
-
       var checkVal :String   = AppConst.STRING_BLANK
       var row      :Row      = null
       var flg      :Boolean  = true
