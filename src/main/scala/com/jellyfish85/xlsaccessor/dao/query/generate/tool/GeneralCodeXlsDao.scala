@@ -23,12 +23,6 @@ import java.util
  */
 class GeneralCodeXlsDao extends GeneralXlsDao[GeneralCodeXlsBean] {
 
-  val prop:     XlsAppProp        = new XlsAppProp
-
-  val manager:  XlsManager     = new XlsManager
-
-  val utils:    XlsAccessUtils = new XlsAccessUtils
-
   /**
    * == findAll ==
    *

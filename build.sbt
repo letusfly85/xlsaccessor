@@ -8,4 +8,6 @@ libraryDependencies += "org.apache.poi" % "poi-ooxml" % "3.7"
 
 libraryDependencies += "commons-configuration" % "commons-configuration" % "1.10"
 
+libraryDependencies += "commons-io" % "commons-io" % "2.4"
+
 libraryDependencies += "commons-lang" % "commons-lang" % "2.6"

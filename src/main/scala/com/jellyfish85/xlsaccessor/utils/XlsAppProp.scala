@@ -7,6 +7,8 @@ import java.io.InputStream
 /**
  * == AppProp ==
  *
+ * application property sets
+ *
  *
  * @author wada shunsuke
  * @since  2013/12/15
@@ -25,27 +27,55 @@ class XlsAppProp {
   //todo search how to configurate UTF8 by using constructor
   //val configuration: Configuration = new PropertiesConfiguration("com/jellyfish85/xlsaccessor/query/generate/tool/code.properties")
 
-  val generalCodeBookParentPath    = configuration.getString("general.code.book.parentPath")
+  /********************************************************************************
+   * general code attribute
+   *
+   *
+   *
+   *********************************************************************************/
+  val generalCodeBookParentPath         = configuration.getString("general.code.book.parentPath")
 
-  val generalCodeBookPath          = configuration.getString("general.code.book.path")
+  val generalCodeBookPath               = configuration.getString("general.code.book.path")
 
-  val generalCodeDefineSheetName   = configuration.getString("general.code.define.sheet.name")
+  val generalCodeDefineSheetName        = configuration.getString("general.code.define.sheet.name")
 
-  val generalCodePhysicalTableName = configuration.getString("general.code.table.name.physical")
+  val generalCodePhysicalTableName      = configuration.getString("general.code.table.name.physical")
 
-  val generalCodeLogicalTableName  = configuration.getString("general.code.table.name.logical")
+  val generalCodeLogicalTableName       = configuration.getString("general.code.table.name.logical")
 
   val generalCodeDefineConstExistsTrue  = configuration.getString("general.code.define.const.exists.true")
 
   val generalCodeDefineConstExistsFalse = configuration.getString("general.code.define.const.exists.false")
 
   var generalCodeDefineColumnMap: Map[String, Int] = Map()
-    val keys: java.util.Iterator[String] = configuration.getKeys("general.code.define.column")
+  val keys: java.util.Iterator[String]  = configuration.getKeys("general.code.define.column")
 
-    while (keys.hasNext) {
-      val key: String = keys.next()
-      val _key = key.replaceAll("general.code.define.column.","")
-      generalCodeDefineColumnMap +=
-        (_key -> configuration.getInt(key))
-    }
+  while (keys.hasNext) {
+    val key: String = keys.next()
+    val _key = key.replaceAll("general.code.define.column.","")
+    generalCodeDefineColumnMap +=
+      (_key -> configuration.getInt(key))
+  }
+
+  /********************************************************************************
+   * unique code attribute
+   *
+   *
+   *
+   *********************************************************************************/
+  val uniqueCodeDefineRowHeader: Int        = configuration.getInt("unique.code.define.row.header")
+
+  val uniqueCodeDefineRowDataStartPos: Int  = configuration.getInt("unique.code.define.row.data.start.pos")
+
+  val uniqueCodeDefineColumnStopper: String = configuration.getString("unique.code.define.column.stopper")
+
+  var uniqueCodeDefineColumnMap: Map[String, Int] = Map()
+  val uniqueCodeKeys: java.util.Iterator[String] = configuration.getKeys("unique.code.define.column")
+  while (uniqueCodeKeys.hasNext) {
+    val key: String = uniqueCodeKeys.next()
+    val _key = key.replaceAll("unique.code.define.column.", "")
+    uniqueCodeDefineColumnMap +=
+      (_key -> configuration.getInt(key))
+  }
+
 }
