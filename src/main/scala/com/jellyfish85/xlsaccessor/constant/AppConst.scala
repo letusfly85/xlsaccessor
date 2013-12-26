@@ -15,7 +15,9 @@ object AppConst {
 
   val STRING_ONE:   String = "1"
 
-  val INT_ONE: Int         = 1
+  val INT_ONE:      Int    = 1
+
+  val INT_ZERO:     Int    = 0
   
   //val 
 

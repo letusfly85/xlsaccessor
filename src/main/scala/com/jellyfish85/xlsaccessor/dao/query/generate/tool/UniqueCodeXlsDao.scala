@@ -1,7 +1,7 @@
 package com.jellyfish85.xlsaccessor.dao.query.generate.tool
 
 import com.jellyfish85.xlsaccessor.constant.AppConst
-import com.jellyfish85.xlsaccessor.bean.query.generate.tool.UniqueCodeXlsBean
+import com.jellyfish85.xlsaccessor.bean.query.generate.tool.{ColumnAttribute, UniqueCodeXlsBean}
 
 import org.apache.poi.ss.usermodel.{FormulaEvaluator, Row, Cell, Sheet, Workbook}
 import org.apache.commons.lang.StringUtils
@@ -66,6 +66,67 @@ class UniqueCodeXlsDao extends GeneralXlsDao {
     }
 
     xlsBean
+  }
+
+  /**
+   * == getCodeDefine ==
+   *
+   * @param sheet
+   * @return
+   */
+  def getCodeDefine(sheet: Sheet, evaluator: FormulaEvaluator) :List[ColumnAttribute] = {
+    var resultSets: List[ColumnAttribute] = List()
+
+    var flg = true
+    val row: Row      = sheet.getRow(prop.uniqueCodeDefineRowColumnsDefine)
+    val rowOfDataType = sheet.getRow(prop.uniqueCodeDefineRowColumnsDataType)
+    val rowOfStopper  = sheet.getRow(prop.uniqueCodeDefineRowColumnsDataLength)
+
+    var idx = 1
+    var checkVal :String = AppConst.STRING_BLANK
+    while(flg) {
+      if (rowOfStopper.getCell(idx) == null) {
+        flg = false
+
+      } else {
+            checkVal =
+              utils.convertCellValue2String(row, evaluator, idx)
+      }
+
+      if (checkVal == prop.uniqueCodeDefineColumnStopper || idx > 1000) {
+          flg = false
+      }
+
+      if (!StringUtils.isBlank(checkVal)) {
+        try {
+          val physicalColumnName = checkVal
+          val dataType           =
+              utils.convertCellValue2String(rowOfDataType, evaluator, idx)
+          var dataLength: Int = AppConst.INT_ZERO
+
+          //todo
+          if (dataType == "VARCHAR2" || dataType == "VARCHAR" || dataType == "CHAR") {
+            val _numericCell = rowOfStopper.getCell(idx)
+            _numericCell.getCellType match {
+              case Cell.CELL_TYPE_NUMERIC =>
+                dataLength = rowOfStopper.getCell(idx).getNumericCellValue.asInstanceOf[Int]
+
+              case Cell.CELL_TYPE_STRING =>
+                dataLength = Integer.parseInt(rowOfStopper.getCell(idx).getStringCellValue.replace("バイト",""))
+            }
+          }
+
+          val attr: ColumnAttribute = new ColumnAttribute(
+            AppConst.STRING_BLANK, physicalColumnName, dataType, dataLength
+
+          )
+          resultSets ::= attr
+        }
+      }
+      idx += 1
+    }
+
+    resultSets
   }
 
   /**

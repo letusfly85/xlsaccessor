@@ -63,11 +63,17 @@ class XlsAppProp {
    *
    *
    *********************************************************************************/
-  val uniqueCodeDefineRowHeader: Int        = configuration.getInt("unique.code.define.row.header")
+  val uniqueCodeDefineRowHeader: Int            = configuration.getInt("unique.code.define.row.header")
 
-  val uniqueCodeDefineRowDataStartPos: Int  = configuration.getInt("unique.code.define.row.data.start.pos")
+  val uniqueCodeDefineRowDataStartPos: Int      = configuration.getInt("unique.code.define.row.data.start.pos")
 
-  val uniqueCodeDefineColumnStopper: String = configuration.getString("unique.code.define.column.stopper")
+  val uniqueCodeDefineColumnStopper: String     = configuration.getString("unique.code.define.column.stopper")
+
+  val uniqueCodeDefineRowColumnsDefine: Int     = configuration.getInt("unique.code.define.row.columns.define")
+
+  val uniqueCodeDefineRowColumnsDataType: Int   = configuration.getInt("unique.code.define.row.columns.data.type")
+
+  val uniqueCodeDefineRowColumnsDataLength: Int  = configuration.getInt("unique.code.define.row.columns.data.length")
 
   var uniqueCodeDefineColumnMap: Map[String, Int] = Map()
   val uniqueCodeKeys: java.util.Iterator[String] = configuration.getKeys("unique.code.define.column")
