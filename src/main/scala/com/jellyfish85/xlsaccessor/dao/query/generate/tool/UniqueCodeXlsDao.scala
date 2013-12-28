@@ -28,6 +28,8 @@ class UniqueCodeXlsDao(path: String) extends GeneralXlsDao {
   val evaluator: FormulaEvaluator  = workBook.getCreationHelper.createFormulaEvaluator
   val sheet: Sheet                 = workBook.getSheet(prop.generalCodeDefineSheetName)
 
+  var xlsBean: UniqueCodeXlsBean   = new UniqueCodeXlsBean
+
   /**
    * get unique code's header information
    *
@@ -35,8 +37,8 @@ class UniqueCodeXlsDao(path: String) extends GeneralXlsDao {
    */
   def getHeaderInfo :UniqueCodeXlsBean = {
 
-    val xlsBean: UniqueCodeXlsBean = new UniqueCodeXlsBean
     xlsBean.path     = this.path
+    xlsBean.startPos = AppConst.INT_ONE
 
     try{
       val row: Row     = sheet.getRow(prop.uniqueCodeDefineRowHeader)
@@ -138,10 +140,11 @@ class UniqueCodeXlsDao(path: String) extends GeneralXlsDao {
    *
    * specify code define data span
    *
-   * @param xlsBean
    */
-  def specifySpan(row: Row ,xlsBean: UniqueCodeXlsBean): Unit = {
+  def specifySpan: Unit = {
     var flg = true
+
+    val row: Row = this.sheet.getRow(prop.uniqueCodeDefineRowColumnsName)
 
     var idx = 1
     var cell: Cell = null
@@ -151,7 +154,7 @@ class UniqueCodeXlsDao(path: String) extends GeneralXlsDao {
       checkVal = utils.convertCellValue2String(cell, evaluator)
 
       if (checkVal.equals(prop.uniqueCodeDefineColumnStopper)) {
-        xlsBean.endPos = idx
+        xlsBean.endPos = idx - 1
         flg = false
         return
 
@@ -172,10 +175,13 @@ class UniqueCodeXlsDao(path: String) extends GeneralXlsDao {
    *
    * @return
    */
-  def getDataEntry: List[Map[Int, String]] = {
-    var list: List[Map[Int, String]] = List()
+  def getDataEntry: util.ArrayList[java.util.Map[Int, String]] = {
+
+    val list: util.ArrayList[java.util.Map[Int, String]] =
+      new util.ArrayList[java.util.Map[Int, String]]()
 
     val uniqueCodeInfo: UniqueCodeXlsBean = getHeaderInfo
+    specifySpan
 
     try{
       var checkVal :String   = AppConst.STRING_BLANK
@@ -202,13 +208,12 @@ class UniqueCodeXlsDao(path: String) extends GeneralXlsDao {
           return list
         }
 
-        var map: Map[Int, String]  = Map()
+        val map: java.util.Map[Int, String]  = new util.HashMap[Int,String]()
         for (i <- uniqueCodeInfo.startPos until uniqueCodeInfo.endPos) {
-          map +=
-            (i -> utils.convertCellValue2String(row, evaluator, i))
+          map.put(i, utils.convertCellValue2String(row, evaluator, i))
         }
 
-        list ::= map
+        list.add(map)
         idx += 1
       }
     }
