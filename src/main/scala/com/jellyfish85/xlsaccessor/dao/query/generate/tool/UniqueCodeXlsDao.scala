@@ -30,8 +30,10 @@ class UniqueCodeXlsDao(path: String) extends GeneralXlsDao {
 
   var xlsBean: UniqueCodeXlsBean   = new UniqueCodeXlsBean
 
-  def closeStream4Path(): Unit = {
+  def closeStream4Path(): Int = {
     this.manager.closeStream
+
+    AppConst.INT_ZERO
   }
 
   /**
