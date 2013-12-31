@@ -30,6 +30,10 @@ class UniqueCodeXlsDao(path: String) extends GeneralXlsDao {
 
   var xlsBean: UniqueCodeXlsBean   = new UniqueCodeXlsBean
 
+  def closeStream4Path {
+    this.manager.closeStream
+  }
+
   /**
    * get unique code's header information
    *
