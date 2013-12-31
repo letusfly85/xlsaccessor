@@ -183,10 +183,10 @@ class UniqueCodeXlsDao(path: String) extends GeneralXlsDao {
    *
    * @return
    */
-  def getDataEntry: util.ArrayList[java.util.Map[Int, String]] = {
+  def getDataEntry: util.ArrayList[util.ArrayList[String]] = {
 
-    val list: util.ArrayList[java.util.Map[Int, String]] =
-      new util.ArrayList[java.util.Map[Int, String]]()
+    val list: util.ArrayList[util.ArrayList[String]] =
+      new util.ArrayList[util.ArrayList[String]]()
 
     val uniqueCodeInfo: UniqueCodeXlsBean = getHeaderInfo
     specifySpan
@@ -216,12 +216,12 @@ class UniqueCodeXlsDao(path: String) extends GeneralXlsDao {
           return list
         }
 
-        val map: java.util.Map[Int, String]  = new util.HashMap[Int,String]()
+        val ary: util.ArrayList[String]  = new util.ArrayList[String]()
         for (i <- uniqueCodeInfo.startPos until uniqueCodeInfo.endPos) {
-          map.put(i, utils.convertCellValue2String(row, evaluator, i))
+          ary.add(utils.convertCellValue2String(row, evaluator, i))
         }
 
-        list.add(map)
+        list.add(ary)
         idx += 1
       }
     }
