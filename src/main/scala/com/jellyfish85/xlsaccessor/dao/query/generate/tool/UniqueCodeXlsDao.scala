@@ -104,7 +104,7 @@ class UniqueCodeXlsDao(path: String) extends GeneralXlsDao {
               utils.convertCellValue2String(row, evaluator, idx)
       }
 
-      if (checkVal.equals(prop.uniqueCodeDefineColumnStopper) || idx > 1000) {
+      if (checkVal.equals(prop.uniqueCodeDefineRowStopper) || idx > 1000) {
           flg = false
       }
 
@@ -160,7 +160,7 @@ class UniqueCodeXlsDao(path: String) extends GeneralXlsDao {
       checkVal = utils.convertCellValue2String(cell, evaluator)
 
       if (checkVal.equals(prop.uniqueCodeDefineColumnStopper)) {
-        xlsBean.endPos = idx + 1
+        xlsBean.endPos = idx
         flg = false
         return
 
@@ -170,7 +170,9 @@ class UniqueCodeXlsDao(path: String) extends GeneralXlsDao {
         return
       }
 
-      idx += 1
+      if (flg) {
+        idx += 1
+      }
     }
   }
 
