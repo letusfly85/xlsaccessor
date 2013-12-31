@@ -31,7 +31,7 @@ class XlsManager {
     WorkbookFactory.create(this.inputStream)
   }
 
-  def closeStream {
+  def closeStream(): Unit = {
     this.inputStream.close()
   }
 
