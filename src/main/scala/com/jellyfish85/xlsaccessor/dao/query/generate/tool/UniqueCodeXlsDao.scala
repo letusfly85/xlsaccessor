@@ -160,7 +160,7 @@ class UniqueCodeXlsDao(path: String) extends GeneralXlsDao {
       checkVal = utils.convertCellValue2String(cell, evaluator)
 
       if (checkVal.equals(prop.uniqueCodeDefineColumnStopper)) {
-        xlsBean.endPos = idx - 1
+        xlsBean.endPos = idx
         flg = false
         return
 
