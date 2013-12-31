@@ -150,7 +150,7 @@ class UniqueCodeXlsDao(path: String) extends GeneralXlsDao {
   def specifySpan: Unit = {
     var flg = true
 
-    val row: Row = this.sheet.getRow(prop.uniqueCodeDefineRowColumnsName)
+    val row: Row = this.sheet.getRow(prop.uniqueCodeDefineRowColumnsDefine)
 
     var idx = 1
     var cell: Cell = null
