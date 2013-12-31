@@ -70,9 +70,9 @@ class XlsAppProp {
 
   val uniqueCodeDefineRowDataStartPos: Int       = configuration.getInt("unique.code.define.row.data.start.pos")
 
-  val uniqueCodeDefineRowStopper: String      = configuration.getString("unique.code.define.row.stopper")
+  val uniqueCodeDefineRowStopper: String         = configuration.getString("unique.code.define.stopper.row")
 
-  val uniqueCodeDefineColumnStopper: String      = configuration.getString("unique.code.define.column.stopper")
+  val uniqueCodeDefineColumnStopper: String      = configuration.getString("unique.code.define.stopper.column")
 
   val uniqueCodeDefineRowColumnsName: Int        = configuration.getInt("unique.code.define.row.columns.name")
 
