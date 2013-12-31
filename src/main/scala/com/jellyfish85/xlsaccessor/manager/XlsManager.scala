@@ -13,6 +13,8 @@ import java.io.{IOException, FileNotFoundException, File, FileInputStream}
  */
 class XlsManager {
 
+  var inputStream: FileInputStream = null
+
   /**
    * == workbook ==
    *
@@ -25,7 +27,13 @@ class XlsManager {
   @throws(classOf[FileNotFoundException])
   @throws(classOf[IOException])
   def workbook(filePath: String): Workbook = {
-    WorkbookFactory.create(new FileInputStream(new File(filePath)))
+    this.inputStream = new FileInputStream(new File(filePath))
+    WorkbookFactory.create(this.inputStream)
   }
+
+  def closeStream {
+    this.inputStream.close()
+  }
+
 
 }
