@@ -1,6 +1,6 @@
 package com.jellyfish85.xlsaccessor.utils
 
-import org.apache.commons.configuration.{PropertiesConfiguration, Configuration}
+import org.apache.commons.configuration.{PropertiesConfiguration}
 import java.io.InputStream
 
 
@@ -33,22 +33,22 @@ class XlsAppProp {
    *
    *
    *********************************************************************************/
-  val generalCodeBookParentPath         = configuration.getString("general.code.book.parentPath")
+  val generalCodeBookParentPath                    = configuration.getString("general.code.book.parentPath")
 
-  val generalCodeBookPath               = configuration.getString("general.code.book.path")
+  val generalCodeBookPath                          = configuration.getString("general.code.book.path")
 
-  val generalCodeDefineSheetName        = configuration.getString("general.code.define.sheet.name")
+  val generalCodeDefineSheetName                   = configuration.getString("general.code.define.sheet.name")
 
-  val generalCodePhysicalTableName      = configuration.getString("general.code.table.name.physical")
+  val generalCodePhysicalTableName                 = configuration.getString("general.code.table.name.physical")
 
-  val generalCodeLogicalTableName       = configuration.getString("general.code.table.name.logical")
+  val generalCodeLogicalTableName                  = configuration.getString("general.code.table.name.logical")
 
-  val generalCodeDefineConstExistsTrue  = configuration.getString("general.code.define.const.exists.true")
+  val generalCodeDefineConstExistsTrue             = configuration.getString("general.code.define.const.exists.true")
 
-  val generalCodeDefineConstExistsFalse = configuration.getString("general.code.define.const.exists.false")
+  val generalCodeDefineConstExistsFalse            = configuration.getString("general.code.define.const.exists.false")
 
   var generalCodeDefineColumnMap: Map[String, Int] = Map()
-  val keys: java.util.Iterator[String]  = configuration.getKeys("general.code.define.column")
+  val keys: java.util.Iterator[String]             = configuration.getKeys("general.code.define.column")
 
   while (keys.hasNext) {
     val key: String = keys.next()
@@ -64,26 +64,26 @@ class XlsAppProp {
    *
    *********************************************************************************/
 
-  val uniqueCodeBookParentPath: String           = configuration.getString("unique.code.book.parentPath")
+  val uniqueCodeBookParentPath: String             = configuration.getString("unique.code.book.parentPath")
 
-  val uniqueCodeDefineRowHeader: Int             = configuration.getInt("unique.code.define.row.header")
+  val uniqueCodeDefineRowHeader: Int               = configuration.getInt("unique.code.define.row.header")
 
-  val uniqueCodeDefineRowDataStartPos: Int       = configuration.getInt("unique.code.define.row.data.start.pos")
+  val uniqueCodeDefineRowDataStartPos: Int         = configuration.getInt("unique.code.define.row.data.start.pos")
 
-  val uniqueCodeDefineRowStopper: String         = configuration.getString("unique.code.define.stopper.row")
+  val uniqueCodeDefineRowStopper: String           = configuration.getString("unique.code.define.stopper.row")
 
-  val uniqueCodeDefineColumnStopper: String      = configuration.getString("unique.code.define.stopper.column")
+  val uniqueCodeDefineColumnStopper: String        = configuration.getString("unique.code.define.stopper.column")
 
-  val uniqueCodeDefineRowColumnsName: Int        = configuration.getInt("unique.code.define.row.columns.name")
+  val uniqueCodeDefineRowColumnsName: Int          = configuration.getInt("unique.code.define.row.columns.name")
 
-  val uniqueCodeDefineRowColumnsDefine: Int      = configuration.getInt("unique.code.define.row.columns.define")
+  val uniqueCodeDefineRowColumnsDefine: Int        = configuration.getInt("unique.code.define.row.columns.define")
 
-  val uniqueCodeDefineRowColumnsDataType: Int    = configuration.getInt("unique.code.define.row.columns.data.type")
+  val uniqueCodeDefineRowColumnsDataType: Int      = configuration.getInt("unique.code.define.row.columns.data.type")
 
-  val uniqueCodeDefineRowColumnsDataLength: Int  = configuration.getInt("unique.code.define.row.columns.data.length")
+  val uniqueCodeDefineRowColumnsDataLength: Int    = configuration.getInt("unique.code.define.row.columns.data.length")
 
-  var uniqueCodeDefineColumnMap: Map[String, Int] = Map()
-  val uniqueCodeKeys: java.util.Iterator[String] = configuration.getKeys("unique.code.define.column")
+  var uniqueCodeDefineColumnMap: Map[String, Int]  = Map()
+  val uniqueCodeKeys: java.util.Iterator[String]   = configuration.getKeys("unique.code.define.column")
   while (uniqueCodeKeys.hasNext) {
     val key: String = uniqueCodeKeys.next()
     val _key = key.replaceAll("unique.code.define.column.", "")
@@ -91,4 +91,12 @@ class XlsAppProp {
       (_key -> configuration.getInt(key))
   }
 
+  /********************************************************************************
+   * template record attribute
+   *
+   *
+   *
+   *********************************************************************************/
+
+  val templateRecordDefineSheetName: String        =  configuration.getString("template.record.define.sheet.name")
 }

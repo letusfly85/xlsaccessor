@@ -3,7 +3,7 @@ package com.jellyfish85.xlsaccessor.dao.query.generate.tool
 import com.jellyfish85.xlsaccessor.constant.AppConst
 import com.jellyfish85.xlsaccessor.bean.query.generate.tool.{XlsColumnAttribute, UniqueCodeXlsBean}
 
-import org.apache.poi.ss.usermodel.{FormulaEvaluator, Row, Cell, Sheet, Workbook}
+import org.apache.poi.ss.usermodel.{Row, Cell, Sheet}
 import org.apache.commons.lang.StringUtils
 import java.util
 import java.io.{IOException, FileNotFoundException}
@@ -22,19 +22,11 @@ import org.apache.commons.io.FilenameUtils
 @throws(classOf[NullPointerException])
 @throws(classOf[FileNotFoundException])
 @throws(classOf[IOException])
-class UniqueCodeXlsDao(path: String) extends GeneralXlsDao {
+class UniqueCodeXlsDao(path: String) extends GeneralXlsDao[UniqueCodeXlsBean](path: String) {
 
-  val workBook:  Workbook          = manager.workbook(path)
-  val evaluator: FormulaEvaluator  = workBook.getCreationHelper.createFormulaEvaluator
   val sheet: Sheet                 = workBook.getSheet(prop.generalCodeDefineSheetName)
 
   var xlsBean: UniqueCodeXlsBean   = new UniqueCodeXlsBean
-
-  def closeStream4Path(): Int = {
-    this.manager.closeStream
-
-    AppConst.INT_ZERO
-  }
 
   /**
    * get unique code's header information

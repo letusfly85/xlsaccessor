@@ -1,16 +1,13 @@
 package com.jellyfish85.xlsaccessor.dao.query.generate.tool
 
 import java.math.BigDecimal
-import org.apache.poi.ss.usermodel.{Row, Sheet, Workbook}
+import org.apache.poi.ss.usermodel.{Row, Sheet}
 import org.apache.commons.lang.StringUtils
 
 import com.jellyfish85.xlsaccessor.bean.query.generate.tool.GeneralCodeXlsBean
-import com.jellyfish85.xlsaccessor.utils.{XlsAccessUtils, XlsAppProp}
-import com.jellyfish85.xlsaccessor.manager.XlsManager
 import com.jellyfish85.xlsaccessor.constant.AppConst
 import com.jellyfish85.svnaccessor.bean.SVNRequestBean
 import org.apache.commons.lang.math.NumberUtils
-import java.util
 
 
 /**
@@ -21,7 +18,9 @@ import java.util
  * @since  2013/12/15
  *
  */
-class GeneralCodeXlsDao extends GeneralXlsDao[GeneralCodeXlsBean] {
+class GeneralCodeXlsDao(path: String) extends GeneralXlsDao[GeneralCodeXlsBean](path: String) {
+
+  val sheet: Sheet  = workBook.getSheet(prop.generalCodeDefineSheetName)
 
   /**
    * == findAll ==
@@ -31,26 +30,18 @@ class GeneralCodeXlsDao extends GeneralXlsDao[GeneralCodeXlsBean] {
    *
    * @author wada shunsuke
    * @since  2013/12/16
-   * @param path
    * @param ticketNumber
    * @param svnRequestBean
    * @return
    */
   def findAll(
-               path:           String,
                ticketNumber:   BigDecimal,
                svnRequestBean: SVNRequestBean
              ): List[GeneralCodeXlsBean] = {
 
     var resultSets: List[GeneralCodeXlsBean] = List()
 
-    var workBook: Workbook = null
     try{
-      // generate poi excel book instances
-      workBook          = manager.workbook(path)
-      val evaluator     = workBook.getCreationHelper.createFormulaEvaluator
-      val sheet: Sheet  = workBook.getSheet(prop.generalCodeDefineSheetName)
-
       var flg: Boolean     = true
       var idx: Int         = AppConst.INT_ONE
       var checkVal: String = AppConst.STRING_BLANK
@@ -131,8 +122,6 @@ class GeneralCodeXlsDao extends GeneralXlsDao[GeneralCodeXlsBean] {
       case e:Exception =>
         println("[ERROR]" + path)
         e.printStackTrace
-    } finally {
-      workBook = null
     }
 
     resultSets
@@ -160,14 +149,8 @@ class GeneralCodeXlsDao extends GeneralXlsDao[GeneralCodeXlsBean] {
          ): List[GeneralCodeXlsBean] = {
 
     var list: List[GeneralCodeXlsBean] = List()
-    var workBook: Workbook       = null
 
     try{
-      // generate poi excel book instances
-      workBook          = manager.workbook(path)
-      val evaluator     = workBook.getCreationHelper.createFormulaEvaluator
-      val sheet: Sheet  = workBook.getSheet(prop.generalCodeDefineSheetName)
-
       // init fields
       var flg:       Boolean = true
       var switch:    Boolean = false
@@ -252,9 +235,6 @@ class GeneralCodeXlsDao extends GeneralXlsDao[GeneralCodeXlsBean] {
       case e:Exception =>
         println("[ERROR]" + path)
         e.printStackTrace
-
-    } finally {
-      workBook = null
     }
 
     list
