@@ -99,6 +99,8 @@ class XlsAppProp {
 
   val templateRecordBookPath: String                  = configuration.getString("template.record.book.path")
 
+  val templateRecordDocsPath: String                  = configuration.getString("template.record.docs.path")
+
   val templateRecordDefineRowColumnHeader: Int        = configuration.getInt("template.record.define.row.column.header")
 
   val templateRecordDefinePhysicalTableName: String   =  configuration.getString("template.record.define.table.name.physical")
