@@ -119,4 +119,15 @@ class XlsAppProp {
       (_key -> configuration.getInt(key))
   }
 
+  val templateRecordDefineColumnOptionFile:       String  = configuration.getString("template.record.define.column.option.file")
+
+  val templateRecordDefineColumnOptionFileData:   String  = configuration.getString("template.record.define.column.option.fileData")
+
+  val templateRecordDefineColumnOptionRegisterYmd: String = configuration.getString("template.record.define.column.option.register.ymd")
+
+  val templateRecordDefineColumnOptionRegisterTimestamp: String
+                                                          = configuration.getString("template.record.define.column.option.register.timestamp")
+
+
+
 }
