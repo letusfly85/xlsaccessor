@@ -97,14 +97,22 @@ class XlsAppProp {
    *
    *********************************************************************************/
 
-  val templateRecordDefineSheetName: String        =  configuration.getString("template.record.define.sheet.name")
+  val templateRecordBookPath: String                  = configuration.getString("template.record.book.path")
+
+  val templateRecordDefineRowColumnHeader: Int        = configuration.getInt("template.record.define.row.column.header")
+
+  val templateRecordDefinePhysicalTableName: String   =  configuration.getString("template.record.define.table.name.physical")
+
+  val templateRecordDefineLogicalTableName: String    =  configuration.getString("template.record.define.table.name.logical")
+
+  val templateRecordDefineSheetName: String           =  configuration.getString("template.record.define.sheet.name")
 
   var templateRecordDefineColumnMap: Map[String, Int] = Map()
   val templateRecordKeys: java.util.Iterator[String]
-                                                   = configuration.getKeys("template.record.define.column.name")
+                                                      = configuration.getKeys("template.record.define.column.name")
   while (templateRecordKeys.hasNext) {
     val key: String = templateRecordKeys.next()
-    val _key = key.replaceAll("template.record.define.column.namen.","")
+    val _key = key.replaceAll("template.record.define.column.name.","")
     templateRecordDefineColumnMap +=
       (_key -> configuration.getInt(key))
   }

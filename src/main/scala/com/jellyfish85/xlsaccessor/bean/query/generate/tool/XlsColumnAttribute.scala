@@ -21,4 +21,16 @@ class XlsColumnAttribute(
   val	dataType:           String = _dataType
   val	dataLength:         Int    = _dataLength
 
+  def copy(_physicalColumnName: String): XlsColumnAttribute = {
+    val clone = new XlsColumnAttribute(
+        logicalTableName,
+        physicalTableName,
+        logicalColumnName,
+       _physicalColumnName,
+        dataType,
+        dataLength
+    )
+
+    clone
+  }
 }
