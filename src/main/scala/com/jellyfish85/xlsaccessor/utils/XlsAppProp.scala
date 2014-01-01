@@ -49,7 +49,6 @@ class XlsAppProp {
 
   var generalCodeDefineColumnMap: Map[String, Int] = Map()
   val keys: java.util.Iterator[String]             = configuration.getKeys("general.code.define.column")
-
   while (keys.hasNext) {
     val key: String = keys.next()
     val _key = key.replaceAll("general.code.define.column.","")
@@ -99,4 +98,15 @@ class XlsAppProp {
    *********************************************************************************/
 
   val templateRecordDefineSheetName: String        =  configuration.getString("template.record.define.sheet.name")
+
+  var templateRecordDefineColumnMap: Map[String, Int] = Map()
+  val templateRecordKeys: java.util.Iterator[String]
+                                                   = configuration.getKeys("template.record.define.column.name")
+  while (templateRecordKeys.hasNext) {
+    val key: String = templateRecordKeys.next()
+    val _key = key.replaceAll("template.record.define.column.namen.","")
+    templateRecordDefineColumnMap +=
+      (_key -> configuration.getInt(key))
+  }
+
 }

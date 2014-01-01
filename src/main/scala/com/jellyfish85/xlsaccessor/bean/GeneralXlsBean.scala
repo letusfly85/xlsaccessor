@@ -12,6 +12,9 @@ import java.math.BigDecimal
  */
 class GeneralXlsBean {
 
+  var logicalTableName: String  = _
+  var physicalTableName: String = _
+
   var path:     String = _
   var fileName: String = _
 

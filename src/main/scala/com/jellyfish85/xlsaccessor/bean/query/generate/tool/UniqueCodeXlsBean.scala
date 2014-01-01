@@ -16,9 +16,6 @@ class UniqueCodeXlsBean extends GeneralXlsBean {
 
   var subsystemCd: String = _
 
-  var physicalTableName :String = _
-  var logicalTableName  :String = _
-
   var logicalKeyName:    String = _
   var physicalKeyName:   String = _
 
