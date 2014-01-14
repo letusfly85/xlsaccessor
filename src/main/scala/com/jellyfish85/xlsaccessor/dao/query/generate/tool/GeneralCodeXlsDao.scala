@@ -121,7 +121,7 @@ class GeneralCodeXlsDao(path: String) extends GeneralXlsDao[GeneralCodeXlsBean](
             bean.displayOrder = Integer.parseInt(_displayOrder)
           }
 
-          if (bean.ignoreFlg.equals(AppConst.STRING_ZERO)){
+          if (bean.ignoreFlg.equals(AppConst.STRING_ZERO) && !StringUtils.isBlank(bean.codeId)){
             resultSets ::= bean
           }
         }
