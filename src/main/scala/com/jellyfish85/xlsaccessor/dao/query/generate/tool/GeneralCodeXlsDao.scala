@@ -59,7 +59,16 @@ class GeneralCodeXlsDao(path: String) extends GeneralXlsDao[GeneralCodeXlsBean](
             flg = false
           }
 
-          checkVal = row.getCell(prop.generalCodeDefineColumnMap("checkVal")).getStringCellValue()
+          try {
+            checkVal = row.getCell(prop.generalCodeDefineColumnMap("checkVal")).getStringCellValue()
+
+          } catch {
+            case e: NullPointerException =>
+              println(idx)
+              flg = false
+              checkVal = AppConst.STRING_BLANK
+          }
+
           if (StringUtils.isBlank(checkVal)){
             flg = false
           }
