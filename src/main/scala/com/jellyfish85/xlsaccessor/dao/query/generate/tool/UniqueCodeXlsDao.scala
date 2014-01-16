@@ -210,7 +210,12 @@ class UniqueCodeXlsDao(path: String) extends GeneralXlsDao[UniqueCodeXlsBean](pa
 
         val ary: util.ArrayList[String]  = new util.ArrayList[String]()
         for (i <- uniqueCodeInfo.startPos until uniqueCodeInfo.endPos) {
-          ary.add(utils.convertCellValue2String(row, evaluator, i))
+          var str: String = utils.convertCellValue2String(row, evaluator, i)
+
+          if ((i == uniqueCodeInfo.endPos -1) && StringUtils.isBlank(str)) {
+            str = "0"
+          }
+          ary.add(str)
         }
 
         list.add(ary)
